@@ -668,8 +668,9 @@ const Anime = () => {
               <div className="border-b border-white/10 p-4">
                 <h2 className="font-semibold text-white">Seasons & episodes</h2>
                 <p className="mt-1 text-[11px] text-white/40">
-                  {`${seasons.length} seasons · choose an episode to play`}
-                </p>
+                  {`${seasons.length} seasons · choose an episode to p
+                  lay`}
+                </p>S
               </div>
 
               <div className="max-h-[760px] space-y-2 overflow-y-auto p-2">
