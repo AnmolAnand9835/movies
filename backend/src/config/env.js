@@ -28,10 +28,21 @@ const configuredOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
+const developmentOrigins =
+  process.env.NODE_ENV === 'production'
+    ? []
+    : [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'http://localhost:4173',
+        'http://127.0.0.1:4173',
+        process.env.FRONTEND_URL
+      ];
+const allowedOrigins = new Set([...configuredOrigins, ...developmentOrigins]);
 
 export const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || configuredOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.has(origin)) {
       callback(null, true);
       return;
     }
