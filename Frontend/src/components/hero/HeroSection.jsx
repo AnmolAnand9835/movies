@@ -130,7 +130,7 @@ export const HeroSection = ({
 
   return (
     <section
-      className="noise relative flex min-h-[clamp(560px,48vw,720px)] items-end overflow-hidden border-b border-line"
+      className="noise relative flex min-h-[clamp(440px,72svh,720px)] items-end overflow-hidden border-b border-line"
       aria-label="Featured trending titles"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -179,7 +179,7 @@ export const HeroSection = ({
             ) : null}
           </div>
 
-          <h1 className="max-w-[620px] text-[40px] font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:text-6xl xl:text-[72px]">
+          <h1 className="max-w-[620px] break-words text-[clamp(1.875rem,8vw,3rem)] font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:text-5xl md:text-6xl xl:text-[72px]">
             {getTitle(active)}
           </h1>
 

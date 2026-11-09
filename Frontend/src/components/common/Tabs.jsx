@@ -25,7 +25,7 @@ export const Tabs = ({
           aria-selected={active}
           onClick={() => onChange(option.value)}
           className={cn(
-            'shrink-0 rounded-lg px-4 py-2 text-[11px] font-semibold transition',
+            'min-h-11 shrink-0 rounded-lg px-4 py-2 text-[11px] font-semibold transition',
             active
               ? 'bg-white/[0.11] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
               : 'text-muted hover:bg-white/[0.045] hover:text-white'

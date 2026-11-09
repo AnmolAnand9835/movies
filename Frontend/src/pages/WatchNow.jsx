@@ -113,7 +113,7 @@ const WatchNow = () => {
               <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
                 Now watching
               </p>
-              <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-4xl">
+              <h1 className="break-words text-2xl font-semibold tracking-tight text-white sm:text-4xl">
                 {title}
               </h1>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/65">

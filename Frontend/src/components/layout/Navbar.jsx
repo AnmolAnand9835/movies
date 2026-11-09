@@ -47,7 +47,7 @@ export const Navbar = () => {
   const [focusMobileSearch, setFocusMobileSearch] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const desktopSearchRef = useRef(null);
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const isDesktop = useMediaQuery('(min-width: 1280px)');
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const { notify } = useToast();
@@ -58,6 +58,12 @@ export const Navbar = () => {
     const params = new URLSearchParams(search);
     setSearchValue(params.get('q') || '');
   }, [pathname, search]);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+    setMobileOpen(false);
+    setFocusMobileSearch(false);
+  }, [isDesktop]);
 
   useEffect(() => {
     const handleShortcut = (event) => {
@@ -129,7 +135,7 @@ export const Navbar = () => {
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Main navigation">
+          <nav className="hidden items-center gap-1 xl:flex" aria-label="Main navigation">
             {navItems.map((item) => (
               <NavLink key={item.to} to={item.to} end={item.end} className={navLinkClass}>
                 {({ isActive }) => (
@@ -162,13 +168,13 @@ export const Navbar = () => {
               onChange={setSearchValue}
               onSubmit={submitSearch}
               inputRef={desktopSearchRef}
-              className="hidden w-[250px] lg:flex xl:w-[300px]"
+              className="hidden w-[250px] xl:flex xl:w-[300px]"
             />
 
             <button
               type="button"
               onClick={() => openMobileMenu(true)}
-              className="grid h-10 w-10 place-items-center rounded-full text-[#c5c9ce] transition hover:bg-white/[0.08] lg:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full text-[#c5c9ce] transition hover:bg-white/[0.08] xl:hidden"
               aria-label="Open search"
             >
               <Search className="h-[19px] w-[19px]" aria-hidden="true" />
@@ -177,7 +183,7 @@ export const Navbar = () => {
             <button
               type="button"
               onClick={() => (mobileOpen ? closeMobileMenu() : openMobileMenu(false))}
-              className="grid h-10 w-10 place-items-center rounded-full text-[#c5c9ce] transition hover:bg-white/[0.08] md:hidden"
+              className="grid h-11 w-11 place-items-center rounded-full text-[#c5c9ce] transition hover:bg-white/[0.08] xl:hidden"
               aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileOpen}
               aria-controls="mobile-navigation"

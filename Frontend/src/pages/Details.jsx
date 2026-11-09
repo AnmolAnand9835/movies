@@ -68,14 +68,14 @@ const AutoEmbed = ({ autoEmbed }) => {
       </h2>
       <div className="space-y-4">
         {data.iframe_code ? (
-          <iframe
-            src={data.iframe_code}
-            title="Auto-Embed stream"
-            width="100%"
-            height="400"
-            allowFullScreen
-            className="w-full rounded-lg border border-white/[0.08] bg-white/[0.023]"
-          />
+          <div className="relative aspect-video overflow-hidden rounded-lg border border-white/[0.08] bg-black">
+            <iframe
+              src={data.iframe_code}
+              title="Auto-Embed stream"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full border-0"
+            />
+          </div>
         ) : null}
         {data.direct_link ? (
           <a
@@ -308,7 +308,7 @@ const Details = ({ mediaType = 'movie', isAnime = false }) => {
             className="object-[55%_center] sm:object-center"
           />
         </div>
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(10,16,27,0.98)_0%,rgba(10,16,27,0.84)_38%,rgba(10,16,27,0.25)_78%,rgba(10,16,27,0.5)_100%)]" />
+        <div className="details-backdrop-scrim pointer-events-none absolute inset-0" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/40" />
 
         <div className="relative mx-auto flex min-h-[560px] max-w-[1500px] flex-col px-5 pb-10 pt-5 sm:px-8 sm:pb-12 xl:px-12">
@@ -344,7 +344,7 @@ const Details = ({ mediaType = 'movie', isAnime = false }) => {
                 ) : null}
               </div>
 
-              <h1 className="max-w-3xl text-3xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl">
+              <h1 className="max-w-3xl break-words text-3xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl">
                 {title}
               </h1>
 
@@ -415,7 +415,16 @@ const Details = ({ mediaType = 'movie', isAnime = false }) => {
                     <Play className="h-4 w-4 fill-current" aria-hidden="true" />
                     Watch now
                   </Link>
-                ) : null}
+                ) : (
+                  <Link
+                    to={`/watch-now/tv/${media.id}`}
+                    state={{ from: isAnime ? `/anime/tv/${id}` : `/tv/${id}` }}
+                    className="inline-flex h-11 items-center gap-2 rounded-xl bg-accent px-5 text-xs font-bold text-[#111B2A] shadow-soft-accent transition hover:-translate-y-0.5 hover:bg-accent-strong focus-visible:outline-offset-4"
+                  >
+                    <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+                    Watch episodes
+                  </Link>
+                )}
 
                 {trailer ? (
                   <button

@@ -17,7 +17,7 @@ export const SkeletonCard = ({ className }) => (
 export const SkeletonGrid = ({ count = 10, className }) => (
   <div
     className={cn(
-      'grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5',
+      'grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-3 sm:gap-x-3 sm:gap-y-6 md:grid-cols-4 lg:grid-cols-5',
       className
     )}
     aria-hidden="true"
@@ -40,7 +40,7 @@ export const SkeletonRow = ({ count = 6 }) => (
 
 export const SkeletonHero = () => (
   <section
-    className="relative flex min-h-[clamp(560px,48vw,720px)] items-end overflow-hidden border-b border-line"
+    className="relative flex min-h-[clamp(440px,72svh,720px)] items-end overflow-hidden border-b border-line"
     aria-busy="true"
     aria-label="Loading featured title"
   >

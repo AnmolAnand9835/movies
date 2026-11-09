@@ -42,7 +42,7 @@ export const TrailerModal = ({ videoKey, title = 'Official trailer', onClose }) 
             type="button"
             onClick={onClose}
             data-autofocus
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/15 bg-white/[0.04] text-white transition hover:bg-white/10"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/15 bg-white/[0.04] text-white transition hover:bg-white/10"
             aria-label="Close trailer"
           >
             <X className="h-4 w-4" aria-hidden="true" />

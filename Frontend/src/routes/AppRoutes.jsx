@@ -8,6 +8,7 @@ import Search from '../pages/Search';
 import MyList from '../pages/MyList';
 import Details from '../pages/Details';
 import WatchNow from '../pages/WatchNow';
+import WatchTVNow from '../pages/WatchTVNow';
 import Person from '../pages/Person';
 import NotFound from '../pages/NotFound';
 
@@ -25,6 +26,7 @@ const AppRoutes = () => (
     <Route path="/anime/movie/:id" element={<Details mediaType="movie" isAnime />} />
     <Route path="/anime/tv/:id" element={<Details mediaType="tv" isAnime />} />
     <Route path="/person/:id" element={<Person />} />
+    <Route path="watch-now/tv/:id" element={<WatchTVNow />} />
     <Route path="watch-now/:id" element={<WatchNow />} />
     <Route path="*" element={<NotFound />} />
   </Routes>

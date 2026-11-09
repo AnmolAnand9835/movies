@@ -34,6 +34,9 @@ export const getTVSeason = ({ id, seasonNumber, signal } = {}) =>
     return season;
   });
 
+export const getTVExternalIds = ({ id, signal } = {}) =>
+  apiRequest(`/tv/${id}/external-ids`, { signal }).then((payload) => payload?.data ?? null);
+
 export const getTVVideos = ({ id, signal } = {}) =>
   apiRequest(`/tv/${id}/videos`, { signal }).then((payload) => payload?.data ?? null);
 

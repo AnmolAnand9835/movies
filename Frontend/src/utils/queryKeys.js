@@ -10,6 +10,7 @@ export const queryKeys = {
   tvList: (list) => ['tv', list],
   tvDetails: (id) => ['tv', String(id)],
   tvSeason: (id, seasonNumber) => ['tv', String(id), 'season', Number(seasonNumber)],
+  tvExternalIds: (id) => ['tv', String(id), 'external-ids'],
   tvSimilar: (id) => ['tv', String(id), 'similar'],
   tvRecommendations: (id) => ['tv', String(id), 'recommendations'],
   animeList: (list) => ['anime', list],

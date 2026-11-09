@@ -410,7 +410,7 @@ const Anime = () => {
             key={tab.value}
             type="button"
             onClick={() => handleTabChange(tab.value)}
-            className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition ${
+            className={`min-h-11 shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition ${
               activeTab === tab.value
                 ? 'bg-violet-500 text-white'
                 : 'border border-white/10 bg-white/[0.035] text-white/60 hover:bg-white/10 hover:text-white'
@@ -551,7 +551,7 @@ const Anime = () => {
           <button
             type="button"
             onClick={resetWatchState}
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-white/75 transition hover:bg-white/10 hover:text-white"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-white/75 transition hover:bg-white/10 hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" /> Back to anime
           </button>
@@ -560,7 +560,7 @@ const Anime = () => {
               href={playerUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-semibold text-white/60 transition hover:bg-white/10 hover:text-white"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs font-semibold text-white/60 transition hover:bg-white/10 hover:text-white"
             >
               Open provider <ExternalLink className="h-3.5 w-3.5" />
             </a>
@@ -578,6 +578,7 @@ const Anime = () => {
                     title={`${title} player`}
                     className="absolute inset-0 h-full w-full border-0"
                     allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                    allowFullScreen
                     referrerPolicy="strict-origin-when-cross-origin"
                   />
                 ) : (
@@ -593,7 +594,7 @@ const Anime = () => {
             </div>
 
             <div className="mt-5">
-              <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              <h1 className="break-words text-2xl font-bold tracking-tight text-white sm:text-3xl">
                 {title}
               </h1>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/50">

@@ -30,7 +30,7 @@ export const GenreFilter = ({
         onClick={() => onChange('all')}
         aria-pressed={activeGenre === 'all'}
         className={cn(
-          'shrink-0 rounded-full border px-4 py-2 text-[11px] font-semibold transition',
+          'min-h-11 shrink-0 rounded-full border px-4 py-2 text-[11px] font-semibold transition',
           activeGenre === 'all'
             ? 'border-accent bg-accent text-[#121B2B]'
             : 'border-white/[0.16] bg-white/[0.018] text-muted hover:border-white/35 hover:text-mist'
@@ -45,7 +45,7 @@ export const GenreFilter = ({
           onClick={() => onChange(String(genre.id))}
           aria-pressed={activeGenre === String(genre.id)}
           className={cn(
-            'shrink-0 rounded-full border px-4 py-2 text-[11px] font-semibold transition',
+            'min-h-11 shrink-0 rounded-full border px-4 py-2 text-[11px] font-semibold transition',
             activeGenre === String(genre.id)
               ? 'border-accent bg-accent text-[#121B2B]'
               : 'border-white/[0.16] bg-white/[0.018] text-muted hover:border-white/35 hover:text-mist'

@@ -41,7 +41,7 @@ export const MediaGrid = ({
   return (
     <div
       className={cn(
-        'grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5',
+        'grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-3 sm:gap-x-3 sm:gap-y-6 md:grid-cols-4 lg:grid-cols-5',
         className
       )}
       aria-busy={loading}

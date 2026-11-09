@@ -47,6 +47,11 @@ body {
 
 img {
   display: block;
+  max-width: 100%;
+}
+
+iframe {
+  max-width: 100%;
 }
 
 button,
@@ -111,7 +116,6 @@ button:disabled {
     box-shadow 0.24s ease;
 }
 
-.poster-card:hover,
 .poster-card:focus-within {
   transform: translateY(-3px);
   border-color: rgba(169, 186, 255, 0.32);
@@ -122,9 +126,20 @@ button:disabled {
   transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.poster-card:hover .card-image,
 .poster-card:focus-within .card-image {
   transform: scale(1.04);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .poster-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(169, 186, 255, 0.32);
+    box-shadow: 0 14px 32px rgba(2, 8, 20, 0.28);
+  }
+
+  .poster-card:hover .card-image {
+    transform: scale(1.04);
+  }
 }
 
 .scroll-row {
@@ -157,14 +172,34 @@ button:disabled {
     linear-gradient(0deg, var(--ca-bg) 0%, rgba(10, 16, 27, 0.28) 35%, rgba(10, 16, 27, 0.06) 100%);
 }
 
+.details-backdrop-scrim {
+  background:
+    linear-gradient(90deg, rgba(10, 16, 27, 0.98) 0%, rgba(10, 16, 27, 0.84) 38%, rgba(10, 16, 27, 0.25) 78%, rgba(10, 16, 27, 0.5) 100%),
+    linear-gradient(0deg, var(--ca-bg) 0%, transparent 55%, rgba(10, 16, 27, 0.4) 100%);
+}
+
 @media (max-width: 767px) {
   html {
     scroll-padding-top: 84px;
   }
 
+  .poster-card:focus-within {
+    transform: none;
+  }
+
+  .poster-card:focus-within .card-image {
+    transform: none;
+  }
+
   .backdrop-scrim {
     background:
       linear-gradient(0deg, var(--ca-bg) 2%, rgba(10, 16, 27, 0.92) 38%, rgba(10, 16, 27, 0.22) 78%),
+      linear-gradient(90deg, rgba(10, 16, 27, 0.62), rgba(10, 16, 27, 0.05));
+  }
+
+  .details-backdrop-scrim {
+    background:
+      linear-gradient(0deg, var(--ca-bg) 0%, rgba(10, 16, 27, 0.92) 42%, rgba(10, 16, 27, 0.3) 100%),
       linear-gradient(90deg, rgba(10, 16, 27, 0.62), rgba(10, 16, 27, 0.05));
   }
 }

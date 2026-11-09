@@ -100,7 +100,7 @@ const Home = () => {
         getGenres={genreLookup}
       />
 
-      <div className="mx-auto max-w-[1500px] space-y-14 px-5 pb-16 pt-7 sm:space-y-16 sm:px-8 sm:pt-9 xl:px-12">
+      <div className="mx-auto max-w-[1500px] space-y-10 px-5 pb-16 pt-7 sm:space-y-16 sm:px-8 sm:pt-9 xl:px-12">
         <MediaRow
           title="Trending This Week"
           eyebrow="What everyone is watching"

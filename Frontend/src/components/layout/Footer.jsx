@@ -10,7 +10,7 @@ const footerLinks = [
 
 export const Footer = () => (
   <footer className="border-t border-white/[0.07]">
-    <div className="mx-auto max-w-[1500px] px-5 py-10 sm:px-8 xl:px-12">
+    <div className="mx-auto max-w-[1500px] px-5 pt-10 pb-[calc(2.5rem+env(safe-area-inset-bottom))] sm:px-8 xl:px-12">
       <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-md">
           <Link to="/" className="inline-flex items-center gap-2.5" aria-label="CineAtlas home">

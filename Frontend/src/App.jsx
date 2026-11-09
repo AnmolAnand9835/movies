@@ -13,7 +13,7 @@ const App = () => (
     </a>
     <ScrollToTop />
     <Navbar />
-    <main id="main-content" className="flex-1">
+    <main id="main-content" className="min-w-0 flex-1">
       <AppRoutes />
     </main>
     <Footer />

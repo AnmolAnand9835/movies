@@ -23,11 +23,18 @@ export const MediaCard = ({ item, rank = null, className, priority = false }) =>
   const rating = getRating(item);
   const year = getYear(item);
   const mediaLabel = getMediaLabel(item);
-  const isMovie = getMediaType(item) === 'movie';
+  const mediaType = getMediaType(item);
+  const isMovie = mediaType === 'movie';
+  const isTV = mediaType === 'tv';
 
   const handleWatchNow = () => {
     if (!item.id) return;
     navigate(`/watch-now/${item.id}`, { state: { from: path } });
+  };
+
+  const handleWatchEpisodes = () => {
+    if (!item.id) return;
+    navigate(`/watch-now/tv/${item.id}`, { state: { from: path } });
   };
 
   return (
@@ -60,6 +67,21 @@ export const MediaCard = ({ item, rank = null, className, priority = false }) =>
           </div>
         ) : null}
 
+        {isTV ? (
+          <div className="pointer-events-none absolute inset-0 z-30">
+            <button
+              type="button"
+              onClick={handleWatchEpisodes}
+              className="pointer-events-auto absolute left-3 top-3 inline-flex min-h-9 items-center gap-2 rounded-full border border-white/20 bg-black/65 px-3 py-1.5 text-[10px] font-semibold text-white opacity-100 backdrop-blur-md transition hover:border-violet-300/50 hover:bg-black/80 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
+              aria-label={`Watch episodes of ${title}`}
+              title="Watch episodes"
+            >
+              <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+              Watch episodes
+            </button>
+          </div>
+        ) : null}
+
         <div className="pointer-events-none absolute inset-x-3 bottom-3 z-20 translate-y-2 opacity-0 transition duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
           <span className="inline-flex items-center rounded-full border border-white/25 bg-black/55 px-3 py-1.5 text-[10px] font-semibold text-white backdrop-blur-md">
             View details
@@ -67,7 +89,7 @@ export const MediaCard = ({ item, rank = null, className, priority = false }) =>
         </div>
       </div>
 
-      <div className="p-3">
+      <div className="p-2.5 sm:p-3">
         <h3 className="truncate text-sm font-semibold tracking-[-0.01em] text-mist">
           {title}
         </h3>
