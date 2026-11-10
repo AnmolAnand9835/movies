@@ -47,18 +47,15 @@ const developmentOrigins =
         "http://127.0.0.1:5173",
         "http://localhost:4173",
         "http://127.0.0.1:4173",
+        process.env.FRONTEND_URL,
+        process.env.FRONTEND_URL_DEVLOPEMENT,
+        process.env.FRONTEND_URL_BRANCH
       ];
 
 const allowedOrigins = new Set([
   ...configuredOrigins,
   ...developmentOrigins,
 ]);
-
-// Restrict preview deployments to your Vercel project
-const isAllowedVercelPreview = (origin) =>
-  /^https:\/\/movies-[a-z0-9-]+-anmolanand9835-projects\.vercel\.app$/i.test(
-    origin
-  );
 
 export const corsOptions = {
   origin: (origin, callback) => {
