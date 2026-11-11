@@ -1,7 +1,25 @@
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.DEV ? '/api/v1' : 'http://localhost:5000/api/v1')
-).replace(/\/+$/, '');
+const DEFAULT_DEVELOPMENT_BASE_URL = '/api/v1';
+const DEFAULT_PRODUCTION_BASE_URL = 'https://movies-ivmx.onrender.com/api/v1';
+
+const resolveApiBaseUrl = () => {
+  const configuredUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+
+  if (configuredUrl) {
+    return configuredUrl.replace(/\/+$/, '');
+  }
+
+  if (import.meta.env.DEV) {
+    return DEFAULT_DEVELOPMENT_BASE_URL;
+  }
+
+  console.error(
+    'Missing VITE_API_BASE_URL in production. Falling back to the expected Render endpoint: ' + DEFAULT_PRODUCTION_BASE_URL
+  );
+
+  return DEFAULT_PRODUCTION_BASE_URL;
+};
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 const DEFAULT_TIMEOUT = 40000;
 

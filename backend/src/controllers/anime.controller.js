@@ -1,9 +1,20 @@
+import { CACHE_TTL } from '../config/tmdb.js';
 import { fetchAnimeContent, fetchFromTMDB } from '../services/tmdb.service.js';
 import { sendControllerError } from '../utils/Response.utils.js';
 
 const parsePage = (value) => {
   const page = parseInt(value, 10);
   return Number.isFinite(page) && page > 0 ? page : 1;
+};
+
+const parsePositiveInteger = (value, fallback = null) => {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+};
+
+const parseSeasonNumber = (value) => {
+  const seasonNumber = Number(value);
+  return Number.isInteger(seasonNumber) && seasonNumber >= 0 ? seasonNumber : null;
 };
 
 const sendAnimePage = async (res, type, page, sortBy, fallbackMessage) => {
@@ -21,6 +32,11 @@ const sendAnimePage = async (res, type, page, sortBy, fallbackMessage) => {
   } catch (error) {
     sendControllerError(res, error, fallbackMessage);
   }
+};
+
+const resolveAnimeId = (req) => {
+  const rawId = req.query?.animeId ?? req.params?.animeId ?? req.params?.id;
+  return parsePositiveInteger(rawId, null);
 };
 
 export const getAnimeMovies = (req, res) =>
@@ -43,34 +59,42 @@ export const getAnimeTV = (req, res) =>
 
 export const getAnimeSeason = async (req, res) => {
   try {
-    const { animeId, seasonNumber } = req.query;
-    if (!seasonNumber) {
-      return res.status(400).json({ success: false, message: 'seasonNumber is required' });
+    const animeId = resolveAnimeId(req);
+    const seasonNumber = parseSeasonNumber(req.query?.seasonNumber ?? req.params?.seasonNumber);
+
+    if (!animeId) {
+      return res.status(400).json({ success: false, message: 'animeId is required' });
     }
 
-    // Fetch the requested TMDB season
+    if (seasonNumber === null) {
+      return res.status(400).json({ success: false, message: 'seasonNumber must be a non-negative integer' });
+    }
+
     const season = await fetchFromTMDB(
       `/tv/${animeId}/season/${seasonNumber}`,
       {},
       CACHE_TTL.DETAILS
     );
 
-    // Normalize episodes from the season
-    const episodes = season.episodes || [];
-
+    const episodes = Array.isArray(season.episodes) ? season.episodes : [];
     const normalizedEpisodes = episodes.map((episode) => ({
       episode_number: episode.episode_number,
       title: episode.name || '',
       overview: episode.overview || '',
       runtime: episode.runtime || 0,
-      thumbnail: episode.still_path ? `https://image.tmdb.org/t/p/w500${episode.still_path}` : '',
+      thumbnail: episode.still_path
+        ? `https://image.tmdb.org/t/p/w500${episode.still_path}`
+        : '',
     }));
 
     res.json({
       success: true,
-      season_number: Number(seasonNumber),
-      episodes: normalizedEpisodes,
-      episode_count: episodes.length,
+      data: {
+        animeId,
+        season_number: Number(seasonNumber),
+        episodes: normalizedEpisodes,
+        episode_count: normalizedEpisodes.length,
+      },
     });
   } catch (error) {
     sendControllerError(res, error, 'Failed to fetch anime season');
@@ -96,19 +120,15 @@ export const getAnimeTopRated = (req, res) =>
   );
 
 export const getAnimeDetails = async (req, res) => {
-  const animeId = req.query.animeId;
+  const animeId = resolveAnimeId(req);
   if (!animeId) {
     return res.status(400).json({ success: false, message: 'animeId is required' });
   }
-  try {
-    // Fetch TMDB TV series details using the anime ID (which is a TMDB TV show ID)
-    const data = await fetchFromTMDB(`/tv/${animeId}`, {}, CACHE_TTL.DETAILS);
 
-    // Normalize the response to include seasons and episodes information
-    // TMDB TV details include a seasons array with basic info
+  try {
+    const data = await fetchFromTMDB(`/tv/${animeId}`, {}, CACHE_TTL.DETAILS);
     const seasons = data.seasons || [];
 
-    // Normalize seasons to include episode counts and other useful info
     const normalizedSeasons = seasons.map((season) => ({
       season_number: season.season_number,
       name: season.name || `Season ${season.season_number}`,
@@ -118,9 +138,7 @@ export const getAnimeDetails = async (req, res) => {
     }));
 
     const normalized = {
-      success: true,
       animeId,
-      // Include the full details for the series
       title: data.name || data.original_name || 'Unknown Title',
       original_name: data.original_name || '',
       first_air_date: data.first_air_date || '',
@@ -132,17 +150,7 @@ export const getAnimeDetails = async (req, res) => {
 
     res.json({
       success: true,
-      data: {
-        animeId,
-        // Include the full details for the series
-        title: data.name || data.original_name || 'Unknown Title',
-        original_name: data.original_name || '',
-        first_air_date: data.first_air_date || '',
-        overview: data.overview || '',
-        poster_path: data.poster_path || '',
-        backdrop_path: data.backdrop_path || '',
-        seasons: normalizedSeasons,
-      },
+      data: normalized,
     });
   } catch (error) {
     sendControllerError(res, error, 'Failed to fetch anime details');

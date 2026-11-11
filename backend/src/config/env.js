@@ -2,15 +2,27 @@
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 
-// Load environment variables
 const envPath = fileURLToPath(new URL("../../.env", import.meta.url));
 dotenv.config({ path: envPath });
 
-// Environment validation
 const requiredEnvVars = ["PORT", "NODE_ENV", "FRONTEND_URL"];
 
+const normalizeOrigin = (value) => {
+  if (!value) return "";
+  return String(value).trim().replace(/\/+$/, "");
+};
+
+const collectOrigins = (...values) => values
+  .flatMap((entry) => {
+    if (!entry) return [];
+    return String(entry)
+      .split(/[\s,]+/)
+      .map(normalizeOrigin)
+      .filter(Boolean);
+  });
+
 const missingVars = requiredEnvVars.filter(
-  (key) => !process.env[key]
+  (key) => !process.env[key]?.trim()
 );
 
 const hasTmdbCredential = Boolean(
@@ -33,11 +45,34 @@ if (!hasTmdbCredential) {
 export const validateEnv = () =>
   missingVars.length === 0 && hasTmdbCredential;
 
-// CORS configuration
-const configuredOrigins = (process.env.FRONTEND_URL || "")
-  .split(",")
-  .map((origin) => origin.trim().replace(/\/$/, ""))
-  .filter(Boolean);
+export const isAllowedVercelPreview = (origin) => {
+  if (!origin || typeof origin !== "string") return false;
+
+  try {
+    const hostname = new URL(origin).hostname.toLowerCase();
+    return hostname === "vercel.app" || hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
+};
+
+export const isAllowedNetlifyPreview = (origin) => {
+  if (!origin || typeof origin !== "string") return false;
+
+  try {
+    const hostname = new URL(origin).hostname.toLowerCase();
+    return hostname === "netlify.app" || hostname.endsWith(".netlify.app");
+  } catch {
+    return false;
+  }
+};
+
+const configuredOrigins = collectOrigins(
+  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL_DEVELOPMENT,
+  process.env.FRONTEND_URL_BRANCH,
+  process.env.CORS_ALLOWED_ORIGINS
+);
 
 const developmentOrigins =
   process.env.NODE_ENV === "production"
@@ -47,9 +82,7 @@ const developmentOrigins =
         "http://127.0.0.1:5173",
         "http://localhost:4173",
         "http://127.0.0.1:4173",
-        process.env.FRONTEND_URL,
-        process.env.FRONTEND_URL_DEVLOPEMENT,
-        process.env.FRONTEND_URL_BRANCH
+        ...configuredOrigins,
       ];
 
 const allowedOrigins = new Set([
@@ -59,8 +92,13 @@ const allowedOrigins = new Set([
 
 export const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests without an Origin header (e.g. server-to-server)
-    if (!origin || allowedOrigins.has(origin) || isAllowedVercelPreview(origin)) {
+    const isAllowed =
+      !origin ||
+      allowedOrigins.has(origin) ||
+      isAllowedVercelPreview(origin) ||
+      isAllowedNetlifyPreview(origin);
+
+    if (isAllowed) {
       return callback(null, true);
     }
 
@@ -82,13 +120,11 @@ export const corsOptions = {
   maxAge: 86400,
 };
 
-// HTTP timeout configuration
 export const httpTimeout = {
   response: 10000,
   connect: 5000,
 };
 
-// API configuration
 export const API_VERSION = "/api/v1";
 
 export const TMDB_ENDPOINTS = {
@@ -101,14 +137,12 @@ export const TMDB_ENDPOINTS = {
   CONFIGURATION: "/configuration",
 };
 
-// Pagination
 export const PAGINATION = {
   DEFAULT_PAGE: 1,
   DEFAULT_PER_PAGE: 20,
   MAX_PER_PAGE: 20,
 };
 
-// Error messages
 export const ERROR_MESSAGES = {
   TMDB_AUTHENTICATION:
     "TMDB authentication failed. Please check your API token.",
